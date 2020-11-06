@@ -19,7 +19,7 @@ We can assume that the purpose of using rust here is to make sure that buffer ov
 
 We can formulate though a solution, if we track down the logic the webserver is following.
 
-First of all we can see that the server loads up some flag (thats what we're tasked to find to complete the challenge) which is 16bytes and casts it to a Uuid.
+First of all we can see that the server loads up some flag (thats what we're tasked to find to complete the challenge) which is 16 bytes and casts it to a Uuid.
 ```rust
  let checks: Vec<Uuid> = std::env::args()
         .skip(1)
@@ -106,7 +106,7 @@ What is very convinient is that we could use a ```u128``` to represent each Uuid
 Therefore I use one function that:
   * takes a u128 which is the middle point in my binary search and a sign ("+" or "-") 
   * initiates a connection to the server
-  * writes 1000 consecutive (in increasing or decreasing order based on the sign) UUids to the server
+  * writes 1000 consecutive (in increasing or decreasing order based on the sign) Uuids to the server
   * waits for the response
   * initiates a time instance
   * and returns it when the connection is closed
@@ -133,7 +133,7 @@ fn check_mid(middle: u128, sign: &str) -> std::io::Result<std::time::Instant> {
 }
 ```
 
-Then I used this function to perform my binary search through the all possible Uuids.
+Then I used this function to perform my binary search throughout the flag space.
 
 ```rust
 fn main() {
@@ -155,7 +155,7 @@ fn main() {
                 .as_nanos();
         }
         // move the middle point according to the statistics gathered
-        // also this is the essense of the binary search
+        // this is the essense of the binary search
         if right > left && right.wrapping_sub(left) > 20000 {
             middle = middle + (u128::MAX / 2u128.pow(i));
             i += 1;
@@ -179,8 +179,9 @@ fn main() {
 }
 ```
 
-It is worth noting that the measurement of time is significant to the binary search path. Random spikes in the network latency can completely ruin our results. Therefore I'm repeating the same request 200 times in an attempt to elimitate the network variable.
-In addition, after a quick research I found that google's VM is located in europe-west1-d datacenter and I ran my program from a VM there to further descrese the random latency.
+It is worth noting that the measurement of time is significant to the binary search path. Random spikes in the network latency can completely ruin our results. Therefore I'm repeating the same request 200 times in an attempt to eliminate the network variable.
+
+In addition, after a quick research I found that google's VM is located in europe-west1-d datacenter and I ran my program from a VM there to further decrease the random latency.
 
 
 Thank god binary search works this way, and we only need to do 128 requests to search all of the key space of the flag.
