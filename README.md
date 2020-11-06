@@ -89,11 +89,11 @@ Assuming that the flag is a value between 1-100, inserting into the binary tree 
 ![](./images/tracing1.png)
 
 
-if the flag is between 0-50 the search operation will be 0(1) and if it is on the upper bound the operation becomes O(n)
+if the flag is between 0-50 the search operation will be O(1) and if it is on the upper bound the operation becomes O(n)
 
 We can then measure the time from the moment the server responds till it shuts down the connection.
 We repeat the same thing but in reverse this time. We insert 50,49,...20.
-which will be O(1) for values higher than 50 and o(n) for the lower bound.
+which will be O(1) for values higher than 50 and O(n) for the lower bound.
 
 Measuring again will give us 3 possible results.
 If our flag is between 50-100 it will take more time to be searched through the first tree and if it is between 0-50 it will take more time on the second tree. IF the time is identical we just found the flag first try (very unlikely). By noting that down we can inference in which half of the key space our flag is on. Congrats, we just performed the first step of Binary search, then we only have to rinse and repeat couple of times till we get really close to the flag value.
