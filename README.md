@@ -85,6 +85,7 @@ A quick check on the binary tree implementation shows that this is **not** a sel
 A simple example on how we could leverage that and search for the flag is the following:
 
 Assuming that the flag is a value between 1-100, inserting into the binary tree values 50,51,.....80 will create the following tree:
+
 ![](./images/tracing1.png)
 
 
