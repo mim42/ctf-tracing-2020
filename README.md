@@ -29,12 +29,12 @@ First of all we can see that the server loads up some flag (thats what we're tas
 
 
 Every new connection to the server spawns a thread that handles it and performs the following:
-    * Read N bytes untill the reading channel is closed from the client
-    * Split the N bytes into chunks of 16 bytes
-    * Create N/16 Uuids and insert them into a fresh b-tree
-    * Write back to the client the number of inserted Uuids
-    * Search the input flag into the b-tree
-    * Close the connection
+  * Read N bytes untill the reading channel is closed from the client
+  * Split the N bytes into chunks of 16 bytes
+  * Create N/16 Uuids and insert them into a fresh b-tree
+  * Write back to the client the number of inserted Uuids
+  * Search the input flag into the b-tree
+  * Close the connection
   
 Highlighting those in code:
 ```rust
@@ -78,14 +78,14 @@ As we can see from the above, we can only alter the content of the b-tree and ha
 What allows to solve this challenge instead is the timing in which the server responds and closes the connection.
 The server writes back to the client the moment it has finished inserting the values into the b-tree and closes the connection only after a complete search for the flag into the tree.
 
-Which means that the only attack angle here is **Timing**.
+Which means that the only attack angle here is **timing**.
 
 A quick check on the binary tree implementation shows that this is **not** a self-balancing b-tree, which means that we can create a totally unbalanced b-tree and therefore alter the searching time on demand.
 
 A simple example on how we could leverage that and search for the flag is the following:
 
 Assuming that the flag is a value between 1-100, inserting into the binary tree values 50,51,.....80 will create the following tree:
-[!image1](./images/tracing1.png)
+![](./images/tracing1.png)
 
 
 if the flag is between 0-50 the search operation will be 0(1) and if it is on the upper bound the operation becomes O(n)
@@ -104,12 +104,12 @@ For the sake of getting more familiar with rust I created a client in rust that 
 What is very convinient is that we could use a ```u128``` to represent each Uuid. Therefore we can easily do numeric operations without a care in the world.
 
 Therefore I use one function that:
-    * takes a u128 which is the middle point in my binary search and a sign ("+" or "-") 
-    * initiates a connection to the server
-    * writes 1000 consecutive (in increasing or decreasing order based on the sign) UUids to the server
-    * waits for the response
-    * initiates a time instance
-    * and returns it when the connection is closed
+  * takes a u128 which is the middle point in my binary search and a sign ("+" or "-") 
+  * initiates a connection to the server
+  * writes 1000 consecutive (in increasing or decreasing order based on the sign) UUids to the server
+  * waits for the response
+  * initiates a time instance
+  * and returns it when the connection is closed
 
 ```rust
 fn check_mid(middle: u128, sign: &str) -> std::io::Result<std::time::Instant> {
