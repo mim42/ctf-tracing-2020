@@ -1,7 +1,7 @@
 ## CTF 2020 Tracing writeup
 
 Well, its been a while since ctf google competition has ended (August 2020) but I just discovered it and thought I should give it a go.
-Soo here it goes:
+Soooo here it goes:
 
 
 The challenge is under the pwn category and it is considered an easy one (but awards 151 points instead of the 50 that most easy challenges are worth)
